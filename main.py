@@ -56,7 +56,7 @@ print(df_cleaned.groupby("country")["invoice_no"].count().sort_values(ascending=
 # Le mois le plus profitable 
 
 
-st.header("Dashboard Projet Streamlit", divider=True)
+st.header("COhorte One| Dashboard Projet Streamlit", divider=True)
 st.subheader("Global Sales Analytics")
 
 st.title("Main KPIs")
