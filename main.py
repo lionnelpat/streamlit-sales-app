@@ -126,17 +126,30 @@ col1, col2 = st.columns(2)
 
 with col1: 
     with chart_container(df_selection):
-        fig = px.bar(df_selection, x="product_name", y="profit", color="country", title="Top Sales", orientation="v")
-        fig.update_layout(legend_title="Country", legend_y=0.9)
-        fig.update_traces(textposition="outside",textfont_size=16, textangle=0, texttemplate="%{y:,.0f}")
-        st.plotly_chart(fig, use_container_width=True)
+
+        profit_by_cat = (
+            df_selection.groupby('category')['profit'].sum()
+            .sort_values(ascending=False)
+            .reset_index(drop=False)
+        )
+        # st.write(profit_by_cat)
+        st.bar_chart(profit_by_cat, y="profit")
+        # fig = px.bar(profit_by_cat, x="category", y="profit", color="category", title="Category Profit")
+        # fig.update_layout(legend_title="Country", legend_y=0.9)
+        # fig.update_traces(textposition="outside",textfont_size=16, textangle=0, texttemplate="%{y:,.0f}")
+        # st.plotly_chart(fig, use_container_width=True)
 
 
 with col2:
     with chart_container(df_selection):
-        fig = px.pie(df_selection, values="total_price", names="category", title="Category Sales", hole=0.5)
-        fig.update_layout(legend_title="Category", legend_y=0.9)
-        fig.update_traces(textposition="outside", textinfo="percent+label")
+        
+        profit_by_cat = df_selection.groupby('category')['profit'].sum().sort_values(ascending=False).reset_index()
+        st.dataframe(profit_by_cat)
+
+        fig = px.pie(profit_by_cat, values="profit", names="category", title="Category Profit", hole=0.5)
+        # fig = px.pie(df_selection, values="total_price", names="category", title="Category Sales", hole=0.5)
+        fig.update_layout(legend_title="Les Category", legend_y=0.9)
+        fig.update_traces(textposition="inside", textinfo="percent+label")
         st.plotly_chart(fig, use_container_width=True)
 
 
